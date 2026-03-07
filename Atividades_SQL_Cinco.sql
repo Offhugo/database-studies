@@ -7,7 +7,17 @@ DESCRIÇÃO: Conjunto de queries focadas em responder perguntas de negócio
 sobre Vendas, RH e Produção, evoluindo de Joins simples para Agregações Complexas.
 */
 
--- 1.0 Tempo Médio de Envio por Território (Em Dias)
+--------------------------------------------------------------------------------
+-- QUESTÃO 1: análise logística com cálculo de tempo
+-- Enunciado: "Calcular o tempo médio de envio dos pedidos por território."
+
+-- Objetivo: Medir a eficiência logística em cada região de vendas.
+
+-- Insights:
+-- -> Função de data DATEDIFF
+-- -> Cálculo derivado dentro de AVG
+-- -> Análise de performance logística
+--------------------------------------------------------------------------------
 
 	SELECT TOP(1000) *
 	  FROM Sales.SalesOrderHeader 
@@ -35,7 +45,17 @@ sobre Vendas, RH e Produção, evoluindo de Joins simples para Agregações Complexa
 	E por fim o foco final foi o de realizar o cálculo correto
 */
 
--- 2.0 Produtos que NUNCA foram vendidos
+--------------------------------------------------------------------------------
+-- QUESTÃO 2: detecção de ausência de relacionamento
+-- Enunciado: "Identificar produtos cadastrados que nunca apareceram em pedidos."
+
+-- Objetivo: Descobrir produtos que nunca foram vendidos.
+
+-- Insights:
+-- -> LEFT JOIN para manter todos os produtos
+-- -> Filtro com IS NULL para identificar ausência de vendas
+-- -> Consulta de análise de catálogo
+--------------------------------------------------------------------------------
 
 	SELECT TOP(100) *
 	  FROM Production.Product
@@ -63,7 +83,17 @@ sobre Vendas, RH e Produção, evoluindo de Joins simples para Agregações Complexa
 
 */
 
--- 3.0 Classificação de Pedidos
+--------------------------------------------------------------------------------
+-- QUESTÃO 3: classificação de dados
+-- Enunciado: "Classificar pedidos em categorias de valor."
+
+-- Objetivo: Criar categorias de vendas baseadas no valor do pedido.
+
+-- Insights:
+-- -> Uso de CASE para lógica condicional
+-- -> Transformação de dados quantitativos em categorias
+-- -> Consulta de categorização analítica
+--------------------------------------------------------------------------------
 
 	SELECT SalesOrderID,
 		   TotalDue,
@@ -80,7 +110,17 @@ sobre Vendas, RH e Produção, evoluindo de Joins simples para Agregações Complexa
 	Aqui foi como fazer um if-else simples porém aplicado a uma query
 */
 
--- 4.0 Total de Vendas por Ano e Mês
+--------------------------------------------------------------------------------
+-- QUESTÃO 4: análise temporal de vendas
+-- Enunciado: "Calcular o total de vendas por ano e mês."
+
+-- Objetivo: Identificar evolução das vendas ao longo do tempo.
+
+-- Insights:
+-- -> Extração de componentes da data
+-- -> Agregação temporal
+-- -> Análise de tendência de vendas
+--------------------------------------------------------------------------------
 
 	SELECT YEAR(OrderDate) AS [Ano],
 		   MONTH(OrderDate) AS [Meses],
@@ -101,8 +141,19 @@ sobre Vendas, RH e Produção, evoluindo de Joins simples para Agregações Complexa
 	e a ordenação afim de ter uma melhor vizualização
 */
 
--- 5.0 receita por motivo de venda
+-- --------------------------------------------------------------------------------
+-- QUESTÃO 5: análise de causa de vendas
+-- Enunciado: "Calcular a receita gerada por cada motivo de venda."
 
+-- Objetivo: Entender quais fatores motivam as vendas.
+
+-- Insights:
+-- -> JOIN em tabela associativa
+-- -> Relacionamento muitos-para-muitos
+-- -> Agregação de receita por categoria
+--------------------------------------------------------------------------------
+
+--	TABELAS DE CONSULTA PRÉVIA
 	SELECT TOP(100) *
 	  FROM Sales.SalesReason
 
@@ -112,6 +163,7 @@ sobre Vendas, RH e Produção, evoluindo de Joins simples para Agregações Complexa
 	SELECT TOP(100) *
 	  FROM Sales.SalesOrderHeaderSalesReason
 
+--  TABELA COM RESULTADO FINAL
 	SELECT SR.SalesReasonID,
 	       SR.Name,
 		   SUM(SOH.TotalDue) AS [ValorPorMotivos]

@@ -1,9 +1,24 @@
+﻿/*******************************************************************************
+PROJETO: Desafios de SQL - Business Intelligence (AdventureWorks)
+AUTOR: Hugo Mendes
+DESCRIÇÃO: Resolução de 5 desafios de SQl envolvendo modelagem relacional
+		   Regras de négocio e SQL analítico.
+*******************************************************************************/
 
+--------------------------------------------------------------------------------
+-- QUESTÃO 1: agregação com múltiplos joins
+-- Enunciado: "Calcular o valor total dos produtos que estão parados em estoque
+-- agrupado por categoria de produto."
 
--- ATIVIDADES COM FOCO EM JOINS E AGREGA��ES
+-- Objetivo: Descobrir quanto capital está imobilizado em estoque para cada
+-- categoria de produto.
 
--- 1. VALOR TOTAL EM ESTOQUE POR CATEGORIA DE PRODUTO
--- DESAFIO: CALCULAR O VALOR DE DOS PRODUTOS PARADOS EM ESTOQUE PELO SEU VALOR
+-- Insights:
+-- -> Cadeia de joins hierárquica (Inventory → Product → Subcategory → Category)
+-- -> Uso de cálculo dentro da agregação (Quantity * StandardCost)
+-- -> SUM para consolidar o valor total
+-- -> Consulta analítica de inventário
+--------------------------------------------------------------------------------
 	
 	SELECT TOP(100) *
 	  FROM Production.ProductInventory
@@ -30,9 +45,19 @@
 
 	 GROUP BY PC.Name
 
--- 2. CONTAGEM DE FUNCION�RIOS POR DEPARTAMENTO
--- DESAFIO: APLICAR CORRETAMENTE A REGRA DE N�GOCIO
-	
+--------------------------------------------------------------------------------
+-- QUESTÃO 2: agregação com regra de negócio (filtro de estado atual)
+-- Enunciado: "Contar quantos funcionários estão atualmente em cada departamento."
+
+-- Objetivo: Retornar a quantidade de funcionários ativos por departamento.
+
+-- Insights:
+-- -> JOIN entre histórico de departamentos e tabela de departamentos
+-- -> Uso de COUNT para contagem de funcionários
+-- -> Regra de negócio: considerar apenas registros ativos (EndDate IS NULL)
+-- -> Consulta de análise organizacional
+--------------------------------------------------------------------------------
+
 	SELECT TOP(100) *
 	  FROM HumanResources.Department
 
@@ -55,8 +80,18 @@
 
 	 GROUP BY D.Name
 
--- 3. TOTAL GASTO EM COMPRAS POR FORNECEDOR
--- DESAFIO: 
+--------------------------------------------------------------------------------
+-- QUESTÃO 3: agregação financeira por entidade
+-- Enunciado: "Calcular o valor total gasto em compras para cada fornecedor."
+
+-- Objetivo: Somar todos os pedidos de compra realizados para cada fornecedor.
+
+-- Insights:
+-- -> JOIN entre pedidos de compra e fornecedores
+-- -> Uso de SUM para consolidar valores financeiros
+-- -> GROUP BY por fornecedor
+-- -> Consulta analítica de relacionamento com fornecedores
+--------------------------------------------------------------------------------
 
 	SELECT TOP(100) *
 	  FROM Purchasing.Vendor
@@ -73,7 +108,19 @@
 
      GROUP BY V.Name
 
--- 4. M�DIA DE DESPERD�CIO NA PRODU��O POR PRODUTO
+--------------------------------------------------------------------------------
+-- QUESTÃO 4: agregação com filtro HAVING
+-- Enunciado: "Calcular a quantidade total de peças desperdiçadas na produção
+-- por produto e mostrar apenas os produtos com desperdício relevante."
+
+-- Objetivo: Identificar produtos com alto nível de desperdício na produção.
+
+-- Insights:
+-- -> JOIN entre produtos e ordens de produção
+-- -> Uso de SUM para consolidar desperdício
+-- -> HAVING para filtrar agregações
+-- -> Consulta analítica de eficiência produtiva
+--------------------------------------------------------------------------------
 
 	SELECT TOP(100) *
 	  FROM Production.Product
@@ -91,8 +138,18 @@
 	 GROUP BY P.Name
 	HAVING SUM(WO.ScrappedQty) > 50
 
--- 5. O MAIOR PEDIDO (VALOR �NICO) FEIO EM CADA PA�S
+--------------------------------------------------------------------------------
+-- QUESTÃO 5: agregação com ranking implícito (MAX)
+-- Enunciado: "Encontrar o maior pedido realizado em cada país."
 
+-- Objetivo: Identificar o pedido de maior valor dentro de cada país.
+
+-- Insights:
+-- -> JOIN entre pedidos, territórios de vendas e países
+-- -> Uso de MAX para encontrar o maior valor
+-- -> GROUP BY por país
+-- -> Consulta analítica de desempenho de vendas por região
+--------------------------------------------------------------------------------
 	SELECT TOP(100) *
 	  FROM Sales.SalesOrderHeader
 
